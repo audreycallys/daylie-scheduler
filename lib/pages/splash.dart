@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../core/theme/app_colors.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/primary_button.dart';
@@ -9,108 +10,134 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.sizeOf(context);
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Stack(
           children: [
-            // Decorative background
+            // Background circle - top right
             Positioned(
-              top: -90,
-              right: -100,
+              top: -85,
+              right: -85,
               child: Container(
-                width: 250,
-                height: 250,
+                width: 220,
+                height: 220,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.secondary.withValues(alpha: 0.18),
+                  color: AppColors.primarySoft.withValues(alpha: 0.65),
                 ),
               ),
             ),
 
+            // Background circle - middle left
             Positioned(
-              bottom: 90,
-              left: -100,
+              top: 180,
+              left: -70,
               child: Container(
-                width: 210,
-                height: 210,
+                width: 130,
+                height: 130,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.accent.withValues(alpha: 0.20),
+                  color: AppColors.primarySoft.withValues(alpha: 0.45),
+                ),
+              ),
+            ),
+
+            // Background circle - bottom left
+            Positioned(
+              bottom: -90,
+              left: -70,
+              child: Container(
+                width: 180,
+                height: 180,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.primarySoft.withValues(alpha: 0.35),
+                ),
+              ),
+            ),
+
+            // Yellow accent - bottom right
+            Positioned(
+              bottom: 115,
+              right: -48,
+              child: Container(
+                width: 125,
+                height: 125,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.accent.withValues(alpha: 0.55),
+                ),
+              ),
+            ),
+
+            // Small yellow circle - top left
+            Positioned(
+              top: 90,
+              left: 35,
+              child: Container(
+                width: 16,
+                height: 16,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.accent,
                 ),
               ),
             ),
 
             // Main content
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
               child: Column(
                 children: [
-                  const Spacer(flex: 3),
+                  const Spacer(flex: 4),
 
-                  const AppLogo(size: 115),
+                  const AppLogo(size: 70),
 
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 22),
 
                   const Text(
                     'Daylie',
                     style: TextStyle(
-                      fontSize: 44,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -1.5,
+                      fontSize: 42,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -1.4,
                       color: AppColors.textPrimary,
                     ),
                   ),
 
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
 
                   const Text(
-                    'Organize your day with ease',
+                    'A little more organized, every day.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 15,
                       height: 1.5,
                       color: AppColors.textSecondary,
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  const Spacer(flex: 5),
 
-                  Container(
-                    width: 42,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                  // Get Started button
+                  PrimaryButton(
+                    text: 'Get Started',
+                    icon: Icons.arrow_forward_rounded,
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                      );
+                    },
                   ),
 
-                  const Spacer(flex: 4),
-
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: screenSize.width > 600 ? 400 : 500,
-                    ),
-                    child: PrimaryButton(
-                      text: 'Get Started',
-                      icon: Icons.arrow_forward_rounded,
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 18),
 
                   const Text(
-                    'Plan smarter. Live better.',
+                    'Make space for what matters.',
                     style: TextStyle(
                       fontSize: 12,
                       color: AppColors.textSecondary,
