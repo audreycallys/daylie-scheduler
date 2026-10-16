@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../core/theme/app_colors.dart';
-import '../widgets/app_logo.dart';
 import '../widgets/primary_button.dart';
 import 'login.dart';
 
@@ -13,141 +12,353 @@ class SplashPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Stack(
-          children: [
-            // Background circle - top right
-            Positioned(
-              top: -85,
-              right: -85,
-              child: Container(
-                width: 220,
-                height: 220,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.primarySoft.withValues(alpha: 0.65),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isCompact = constraints.maxHeight < 700;
+
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 28, 28, 30),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 440),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Brand
+                          const _BrandHeader(),
+
+                          SizedBox(height: isCompact ? 42 : 65),
+
+                          // Headline
+                          const Text(
+                            'Make every\n'
+                            'day count.',
+                            style: TextStyle(
+                              fontSize: 46,
+                              fontWeight: FontWeight.w800,
+                              height: 1.08,
+                              letterSpacing: -2,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+
+                          const SizedBox(height: 18),
+
+                          const Text(
+                            'Your plans, tasks, and little wins.\n'
+                            'All in one place.',
+                            style: TextStyle(
+                              fontSize: 15,
+                              height: 1.6,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+
+                          SizedBox(height: isCompact ? 25 : 42),
+
+                          // Preview schedule
+                          const _SchedulePreview(),
+
+                          SizedBox(height: isCompact ? 35 : 65),
+
+                          // Get Started
+                          PrimaryButton(
+                            text: 'Get Started',
+                            icon: Icons.arrow_forward_rounded,
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginPage(),
+                                ),
+                              );
+                            },
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          const Center(
+                            child: Text(
+                              'A better routine starts here.',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
 
-            // Background circle - middle left
-            Positioned(
-              top: 180,
-              left: -70,
-              child: Container(
-                width: 130,
-                height: 130,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.primarySoft.withValues(alpha: 0.45),
+// ==========================
+// Brand Header
+// ==========================
+
+class _BrandHeader extends StatelessWidget {
+  const _BrandHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      children: [
+        Icon(Icons.circle_outlined, size: 27, color: AppColors.primary),
+        SizedBox(width: 10),
+        Text(
+          'daylie.',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -1.2,
+            color: AppColors.primary,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ==========================
+// Schedule Preview
+// ==========================
+
+class _SchedulePreview extends StatelessWidget {
+  const _SchedulePreview();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.textPrimary.withValues(alpha: 0.04),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Calendar header
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Your week',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
                 ),
               ),
-            ),
-
-            // Background circle - bottom left
-            Positioned(
-              bottom: -90,
-              left: -70,
-              child: Container(
-                width: 180,
-                height: 180,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.primarySoft.withValues(alpha: 0.35),
-                ),
+              Icon(
+                Icons.calendar_month_outlined,
+                size: 20,
+                color: AppColors.primary,
               ),
-            ),
+            ],
+          ),
 
-            // Yellow accent - bottom right
-            Positioned(
-              bottom: 115,
-              right: -48,
-              child: Container(
-                width: 125,
-                height: 125,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.accent.withValues(alpha: 0.55),
-                ),
+          const SizedBox(height: 16),
+
+          // Date preview
+          const Row(
+            children: [
+              Expanded(
+                child: _DateItem(day: 'MON', date: '19'),
               ),
-            ),
-
-            // Small yellow circle - top left
-            Positioned(
-              top: 90,
-              left: 35,
-              child: Container(
-                width: 16,
-                height: 16,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.accent,
-                ),
+              SizedBox(width: 6),
+              Expanded(
+                child: _DateItem(day: 'TUE', date: '20', selected: true),
               ),
+              SizedBox(width: 6),
+              Expanded(
+                child: _DateItem(day: 'WED', date: '21'),
+              ),
+              SizedBox(width: 6),
+              Expanded(
+                child: _DateItem(day: 'THU', date: '22'),
+              ),
+              SizedBox(width: 6),
+              Expanded(
+                child: _DateItem(day: 'FRI', date: '23'),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 16),
+
+          // One upcoming activity
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+            decoration: BoxDecoration(
+              color: AppColors.primarySoft,
+              borderRadius: BorderRadius.circular(14),
             ),
-
-            // Main content
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
-              child: Column(
-                children: [
-                  const Spacer(flex: 4),
-
-                  const AppLogo(size: 70),
-
-                  const SizedBox(height: 22),
-
-                  const Text(
-                    'Daylie',
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.check_circle_outline_rounded,
+                  size: 20,
+                  color: AppColors.primary,
+                ),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Morning planning',
                     style: TextStyle(
-                      fontSize: 42,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -1.4,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
                     ),
                   ),
-
-                  const SizedBox(height: 10),
-
-                  const Text(
-                    'A little more organized, every day.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 15,
-                      height: 1.5,
-                      color: AppColors.textSecondary,
-                    ),
+                ),
+                Text(
+                  '09:00',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
                   ),
-
-                  const Spacer(flex: 5),
-
-                  // Get Started button
-                  PrimaryButton(
-                    text: 'Get Started',
-                    icon: Icons.arrow_forward_rounded,
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ),
-                      );
-                    },
-                  ),
-
-                  const SizedBox(height: 18),
-
-                  const Text(
-                    'Make space for what matters.',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ==========================
+// Date Item
+// ==========================
+
+class _DateItem extends StatelessWidget {
+  final String day;
+  final String date;
+  final bool selected;
+
+  const _DateItem({
+    required this.day,
+    required this.date,
+    this.selected = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        color: selected ? AppColors.accent : AppColors.background,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          Text(
+            day,
+            style: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            date,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textPrimary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ==========================
+// Event Card
+// ==========================
+
+class _EventCard extends StatelessWidget {
+  final String time;
+  final String title;
+  final String subtitle;
+  final Color color;
+  final IconData icon;
+
+  const _EventCard({
+    required this.time,
+    required this.title,
+    required this.subtitle,
+    required this.color,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: AppColors.primary),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            time,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColors.primary,
+            ),
+          ),
+        ],
       ),
     );
   }

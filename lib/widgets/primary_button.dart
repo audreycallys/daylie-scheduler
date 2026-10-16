@@ -17,7 +17,7 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 58,
+      height: 56,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
@@ -25,7 +25,6 @@ class PrimaryButton extends StatelessWidget {
           foregroundColor: AppColors.white,
           elevation: 0,
           shape: const StadiumBorder(),
-          padding: const EdgeInsets.symmetric(horizontal: 24),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -36,8 +35,8 @@ class PrimaryButton extends StatelessWidget {
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             if (icon != null) ...[
-              const SizedBox(width: 10),
-              Icon(icon, size: 18),
+              const SizedBox(width: 12),
+              Icon(icon, size: 19),
             ],
           ],
         ),
