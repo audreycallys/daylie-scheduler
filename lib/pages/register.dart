@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../core/theme/app_colors.dart';
+import '../widgets/app_logo.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
+
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -38,18 +40,18 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void _socialLogin(String provider) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('$provider login belum tersedia')));
-  }
-
   void _backToLogin() {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginPage()),
       (route) => false,
     );
+  }
+
+  void _socialLogin(String provider) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('$provider login belum tersedia')));
   }
 
   @override
@@ -70,29 +72,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Brand
-                      const Row(
-                        children: [
-                          Icon(
-                            Icons.circle_outlined,
-                            size: 27,
-                            color: AppColors.primary,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            'daylie.',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: -1.2,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Reusable App Logo
+                      const AppLogo(),
 
                       const SizedBox(height: 42),
 
+                      // Heading
                       const Text(
                         'Create your\naccount.',
                         style: TextStyle(
@@ -189,6 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       const SizedBox(height: 30),
 
+                      // Create Account button
                       PrimaryButton(
                         text: 'Create Account',
                         icon: Icons.arrow_forward_rounded,
@@ -197,6 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       const SizedBox(height: 28),
 
+                      // Social icons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -212,7 +199,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                           ),
+
                           const SizedBox(width: 22),
+
                           _SocialIcon(
                             label: 'Apple',
                             onTap: () => _socialLogin('Apple'),
@@ -227,6 +216,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       const SizedBox(height: 28),
 
+                      // Login navigation
                       Center(
                         child: Wrap(
                           alignment: WrapAlignment.center,
@@ -239,6 +229,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: AppColors.textSecondary,
                               ),
                             ),
+
                             TextButton(
                               onPressed: _backToLogin,
                               child: const Text(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../core/theme/app_colors.dart';
+import '../widgets/app_logo.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
+
 import 'main_page.dart';
 import 'register.dart';
 
@@ -64,26 +66,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Brand
-                      const Row(
-                        children: [
-                          Icon(
-                            Icons.circle_outlined,
-                            size: 27,
-                            color: AppColors.primary,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            'daylie.',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: -1.2,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Reusable App Logo
+                      const AppLogo(),
 
                       const SizedBox(height: 58),
 
@@ -166,6 +150,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 24),
 
+                      // Login button
                       PrimaryButton(
                         text: 'Log In',
                         icon: Icons.arrow_forward_rounded,
@@ -190,7 +175,9 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
+
                           const SizedBox(width: 22),
+
                           _SocialIcon(
                             label: 'Apple',
                             onTap: () => _socialLogin('Apple'),
@@ -218,6 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: AppColors.textSecondary,
                               ),
                             ),
+
                             TextButton(
                               onPressed: () {
                                 Navigator.push(

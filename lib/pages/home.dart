@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 
 import '../core/theme/app_colors.dart';
+import '../widgets/app_logo.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,15 +14,12 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'daylie.',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w800,
-                color: AppColors.primary,
-              ),
-            ),
+            // Reusable App Logo
+            AppLogo(),
+
             SizedBox(height: 45),
+
+            // Heading
             Text(
               'Make today\nyours.',
               style: TextStyle(
@@ -32,13 +29,13 @@ class HomePage extends StatelessWidget {
                 color: AppColors.textPrimary,
               ),
             ),
+
             SizedBox(height: 12),
+
+            // Subtitle
             Text(
               'A little progress every day adds up.',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.textSecondary,
-              ),
+              style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
             ),
           ],
         ),
