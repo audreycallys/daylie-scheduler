@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_scheduler/services/api.dart';
 
 import '../core/theme/app_colors.dart';
 import '../widgets/app_logo.dart';
@@ -28,13 +29,13 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _handleLogin() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const MainPage()),
-      (route) => false,
-    );
-  }
+  // void _handleLogin() {
+  //   Navigator.pushAndRemoveUntil(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => const MainPage()),
+  //     (route) => false,
+  //   );
+  // }
 
   void _socialLogin(String provider) {
     ScaffoldMessenger.of(
@@ -46,6 +47,19 @@ class _LoginPageState extends State<LoginPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Password reset belum tersedia')),
     );
+  }
+
+  Future<void> login() async {
+    try {
+      final response = await ApiService.post("/auth/login", {
+        "email": "email@gmail.com",
+        "password": "password123",
+      });
+
+      print(response);
+    } catch (e) {
+      print("ytfygyu");
+    }
   }
 
   @override
@@ -154,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                       PrimaryButton(
                         text: 'Log In',
                         icon: Icons.arrow_forward_rounded,
-                        onPressed: _handleLogin,
+                        onPressed: login, //BARU
                       ),
 
                       const SizedBox(height: 32),
