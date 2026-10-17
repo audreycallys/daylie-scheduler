@@ -56,6 +56,13 @@ class _LoginPageState extends State<LoginPage> {
         "password": _passwordController.text,
       });
 
+      await ApiService.saveToken(response['data']['token']);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainPage()),
+      );
+
       print(response);
     } catch (e) {
       print(e);
