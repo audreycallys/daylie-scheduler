@@ -52,13 +52,13 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> login() async {
     try {
       final response = await ApiService.post("/auth/login", {
-        "email": "email@gmail.com",
-        "password": "password123",
+        "email": _emailController.text.trim(),
+        "password": _passwordController.text,
       });
 
       print(response);
     } catch (e) {
-      print("ytfygyu");
+      print(e);
     }
   }
 
