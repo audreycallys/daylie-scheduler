@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
+import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -12,14 +13,13 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final _formKey = GlobalKey<FormState>();
-
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
   bool _showPassword = false;
+  bool _showConfirmPassword = false;
 
   @override
   void dispose() {
@@ -30,20 +30,26 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  // Form validation
   void _handleRegister() {
-    if (!_formKey.currentState!.validate()) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Register form berhasil divalidasi')),
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+      (route) => false,
     );
   }
 
-  // Social login placeholder
   void _socialLogin(String provider) {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text('$provider login belum tersedia')));
+  }
+
+  void _backToLogin() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+      (route) => false,
+    );
   }
 
   @override
@@ -64,9 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // =========================
-                      // App Brand
-                      // =========================
+                      // Brand
                       const Row(
                         children: [
                           Icon(
@@ -89,9 +93,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       const SizedBox(height: 42),
 
-                      // =========================
-                      // Header
-                      // =========================
                       const Text(
                         'Create your\naccount.',
                         style: TextStyle(
@@ -117,115 +118,85 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       const SizedBox(height: 30),
 
-                      // =========================
-                      // Register Form
-                      // =========================
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            // Full Name
-                            CustomTextField(
-                              label: 'Full name',
-                              hint: 'Enter your full name',
-                              icon: Icons.person_outline_rounded,
-                              controller: _nameController,
-                              validator: (value) {
-                                final name = value?.trim() ?? '';
+                      // Full name
+                      CustomTextField(
+                        label: 'Full name',
+                        hint: 'Enter your full name',
+                        icon: Icons.person_outline_rounded,
+                        controller: _nameController,
+                      ),
 
-                                if (name.isEmpty) {
-                                  return 'Full name is required';
-                                }
+                      const SizedBox(height: 18),
 
-                                if (name.length < 3) {
-                                  return 'Name must be at least 3 characters';
-                                }
+                      // Email
+                      CustomTextField(
+                        label: 'Email address',
+                        hint: 'Enter your email',
+                        icon: Icons.mail_outline_rounded,
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
 
-                                return null;
-                              },
-                            ),
+                      const SizedBox(height: 18),
 
-                            const SizedBox(height: 18),
-
-                            // Email
-                            CustomTextField(
-                              label: 'Email address',
-                              hint: 'Enter your email',
-                              icon: Icons.mail_outline_rounded,
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (value) {
-                                final email = value?.trim() ?? '';
-
-                                if (email.isEmpty) {
-                                  return 'Email is required';
-                                }
-
-                                final emailPattern = RegExp(
-                                  r'^[^\s@]+@[^\s@]+\.[^\s@]+$',
-                                );
-
-                                if (!emailPattern.hasMatch(email)) {
-                                  return 'Enter a valid email address';
-                                }
-
-                                return null;
-                              },
-                            ),
-
-                            const SizedBox(height: 18),
-
-                            // Password
-                            CustomTextField(
-                              label: 'Password',
-                              hint: 'Create a password',
-                              icon: Icons.lock_outline_rounded,
-                              controller: _passwordController,
-                              obscureText: !_showPassword,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _showPassword = !_showPassword;
-                                  });
-                                },
-                                icon: Icon(
-                                  _showPassword
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off_outlined,
-                                  color: AppColors.textSecondary,
-                                  size: 20,
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Password is required';
-                                }
-
-                                if (value.length < 8) {
-                                  return 'Password must be at least 8 characters';
-                                }
-
-                                return null;
-                              },
-                            ),
-
-                            const SizedBox(height: 30),
-
-                            PrimaryButton(
-                              text: 'Create Account',
-                              icon: Icons.arrow_forward_rounded,
-                              onPressed: _handleRegister,
-                            ),
-                          ],
+                      // Password
+                      CustomTextField(
+                        label: 'Password',
+                        hint: 'Create a password',
+                        icon: Icons.lock_outline_rounded,
+                        controller: _passwordController,
+                        obscureText: !_showPassword,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _showPassword = !_showPassword;
+                            });
+                          },
+                          icon: Icon(
+                            _showPassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: AppColors.textSecondary,
+                            size: 20,
+                          ),
                         ),
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      // Confirm password
+                      CustomTextField(
+                        label: 'Confirm password',
+                        hint: 'Repeat your password',
+                        icon: Icons.lock_outline_rounded,
+                        controller: _confirmPasswordController,
+                        obscureText: !_showConfirmPassword,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _showConfirmPassword = !_showConfirmPassword;
+                            });
+                          },
+                          icon: Icon(
+                            _showConfirmPassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: AppColors.textSecondary,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      PrimaryButton(
+                        text: 'Create Account',
+                        icon: Icons.arrow_forward_rounded,
+                        onPressed: _handleRegister,
                       ),
 
                       const SizedBox(height: 28),
 
-                      // =========================
-                      // Google & Apple
-                      // =========================
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -241,9 +212,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                           ),
-
                           const SizedBox(width: 22),
-
                           _SocialIcon(
                             label: 'Apple',
                             onTap: () => _socialLogin('Apple'),
@@ -258,9 +227,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       const SizedBox(height: 28),
 
-                      // =========================
-                      // Back to Login
-                      // =========================
                       Center(
                         child: Wrap(
                           alignment: WrapAlignment.center,
@@ -274,9 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                             TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                              onPressed: _backToLogin,
                               child: const Text(
                                 'Log In',
                                 style: TextStyle(
@@ -299,10 +263,6 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
-
-// =========================
-// Circular Social Button
-// =========================
 
 class _SocialIcon extends StatelessWidget {
   final String label;

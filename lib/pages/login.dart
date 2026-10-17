@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
+import 'main_page.dart';
 import 'register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,8 +14,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -27,16 +26,14 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  // Login validation
   void _handleLogin() {
-    if (!_formKey.currentState!.validate()) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Login form berhasil divalidasi')),
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const MainPage()),
+      (route) => false,
     );
   }
 
-  // Social login placeholder
   void _socialLogin(String provider) {
     ScaffoldMessenger.of(
       context,
@@ -67,9 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // =========================
-                      // App Brand
-                      // =========================
+                      // Brand
                       const Row(
                         children: [
                           Icon(
@@ -92,9 +87,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 58),
 
-                      // =========================
-                      // Header - Left Aligned
-                      // =========================
+                      // Heading
                       const Text(
                         'Welcome\nback.',
                         style: TextStyle(
@@ -120,111 +113,68 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 38),
 
-                      // =========================
-                      // Login Form
-                      // =========================
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            // Email
-                            CustomTextField(
-                              label: 'Email address',
-                              hint: 'Enter your email',
-                              icon: Icons.mail_outline_rounded,
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (value) {
-                                final email = value?.trim() ?? '';
+                      // Email
+                      CustomTextField(
+                        label: 'Email address',
+                        hint: 'Enter your email',
+                        icon: Icons.mail_outline_rounded,
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
 
-                                if (email.isEmpty) {
-                                  return 'Email is required';
-                                }
+                      const SizedBox(height: 22),
 
-                                final emailPattern = RegExp(
-                                  r'^[^\s@]+@[^\s@]+\.[^\s@]+$',
-                                );
-
-                                if (!emailPattern.hasMatch(email)) {
-                                  return 'Enter a valid email address';
-                                }
-
-                                return null;
-                              },
-                            ),
-
-                            const SizedBox(height: 22),
-
-                            // Password
-                            CustomTextField(
-                              label: 'Password',
-                              hint: 'Enter your password',
-                              icon: Icons.lock_outline_rounded,
-                              controller: _passwordController,
-                              obscureText: !_showPassword,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _showPassword = !_showPassword;
-                                  });
-                                },
-                                icon: Icon(
-                                  _showPassword
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off_outlined,
-                                  color: AppColors.textSecondary,
-                                  size: 20,
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Password is required';
-                                }
-
-                                if (value.length < 8) {
-                                  return 'Password must be at least 8 characters';
-                                }
-
-                                return null;
-                              },
-                            ),
-
-                            const SizedBox(height: 12),
-
-                            // Forgot Password
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: _forgotPassword,
-                                child: const Text(
-                                  'Forgot password?',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(height: 24),
-
-                            // Login Button
-                            PrimaryButton(
-                              text: 'Log In',
-                              icon: Icons.arrow_forward_rounded,
-                              onPressed: _handleLogin,
-                            ),
-                          ],
+                      // Password
+                      CustomTextField(
+                        label: 'Password',
+                        hint: 'Enter your password',
+                        icon: Icons.lock_outline_rounded,
+                        controller: _passwordController,
+                        obscureText: !_showPassword,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _showPassword = !_showPassword;
+                            });
+                          },
+                          icon: Icon(
+                            _showPassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: AppColors.textSecondary,
+                            size: 20,
+                          ),
                         ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: _forgotPassword,
+                          child: const Text(
+                            'Forgot password?',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      PrimaryButton(
+                        text: 'Log In',
+                        icon: Icons.arrow_forward_rounded,
+                        onPressed: _handleLogin,
                       ),
 
                       const SizedBox(height: 32),
 
-                      // =========================
-                      // Social Login
-                      // =========================
+                      // Social icons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -240,9 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-
                           const SizedBox(width: 22),
-
                           _SocialIcon(
                             label: 'Apple',
                             onTap: () => _socialLogin('Apple'),
@@ -257,9 +205,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 36),
 
-                      // =========================
-                      // Register Navigation
-                      // =========================
+                      // Register navigation
                       Center(
                         child: Wrap(
                           alignment: WrapAlignment.center,
@@ -272,7 +218,6 @@ class _LoginPageState extends State<LoginPage> {
                                 color: AppColors.textSecondary,
                               ),
                             ),
-
                             TextButton(
                               onPressed: () {
                                 Navigator.push(
@@ -304,10 +249,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-// =========================
-// Social Icon Button
-// =========================
 
 class _SocialIcon extends StatelessWidget {
   final String label;
