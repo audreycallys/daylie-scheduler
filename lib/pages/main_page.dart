@@ -38,10 +38,8 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
 
-      // Menyimpan state setiap halaman
       body: IndexedStack(index: _currentIndex, children: _pages),
 
-      // Bottom Bar tampil di semua tab
       bottomNavigationBar: BottomNavbar(
         currentIndex: _currentIndex,
         onTap: _changeTab,
